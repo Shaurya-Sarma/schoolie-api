@@ -1,13 +1,15 @@
 const express = require("express");
 const app = express();
 const studentRoute = express.Router();
+const jwt = require("jsonwebtoken");
+const config = require("../config");
 
 // Student model
 let Student = require("../model/Student");
 
 // Add Student
 studentRoute.route("/register").post((req, res, next) => {
-  Student.findOne({ email: req.body.email }, function(err, data) {
+  Student.findOne({ email: req.body.email }, function (err, data) {
     if (err) {
       return next(err);
     } else if (data) {
@@ -51,7 +53,11 @@ studentRoute.route("/login").post((req, res) => {
     } else if (error) {
       return next(error);
     } else {
-      res.json({ userName: data.userName, email: data.email });
+      const user = { userName: data.userName, email: data.email };
+      const token = jwt.sign(user, config.secret, {
+        expiresIn: 86400, // expires in 24 hours
+      });
+      res.json({ ...user, token: token });
     }
   });
 });
@@ -61,7 +67,7 @@ studentRoute.route("/update-student/:id").put((req, res, next) => {
   Student.findByIdAndUpdate(
     req.params.id,
     {
-      $set: req.body
+      $set: req.body,
     },
     (error, data) => {
       if (error) {
@@ -82,7 +88,7 @@ studentRoute.route("/delete-student/:id").delete((req, res, next) => {
       return next(error);
     } else {
       res.status(200).json({
-        msg: data
+        msg: data,
       });
     }
   });
