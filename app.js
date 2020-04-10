@@ -9,30 +9,32 @@ let express = require("express"),
 mongoose.Promise = global.Promise;
 mongoose
   .connect(dataBaseConfig.db, {
-    useNewUrlParser: true
+    useNewUrlParser: true,
   })
   .then(
     () => {
       console.log("Database connected sucessfully ");
     },
-    error => {
+    (error) => {
       console.log("Could not connected to database : " + error);
     }
   );
 
 // Set up express js port
 const studentRoute = require("./routes/student.route");
+const taskRoute = require("./routes/task.route");
 const app = express();
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
-    extended: false
+    extended: false,
   })
 );
 app.use(cors());
 app.use(express.static(path.join(__dirname, "static")));
 app.use("/", express.static(path.join(__dirname, "static")));
-app.use("/api", studentRoute);
+app.use("/api/users/", studentRoute);
+app.use("/api/tasks/", taskRoute);
 
 // Create port
 const port = process.env.PORT || 4000;
@@ -46,7 +48,7 @@ const server = app.listen(port, () => {
 //});
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   console.error(err.message);
   if (!err.statusCode) err.statusCode = 500;
   res.status(err.statusCode).send(err.message);

@@ -7,7 +7,7 @@ const config = require("../config");
 // Student model
 let Student = require("../model/Student");
 
-// Add Student
+// Register Student
 studentRoute.route("/register").post((req, res, next) => {
   Student.findOne({ email: req.body.email }, function (err, data) {
     if (err) {
