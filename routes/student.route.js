@@ -53,7 +53,7 @@ studentRoute.route("/login").post((req, res) => {
     } else if (error) {
       return next(error);
     } else {
-      const user = { userName: data.userName, email: data.email };
+      const user = { userName: data.userName, email: data.email, id: data.id };
       const token = jwt.sign(user, config.secret, {
         expiresIn: 86400, // expires in 24 hours
       });

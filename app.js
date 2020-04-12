@@ -3,7 +3,8 @@ let express = require("express"),
   mongoose = require("mongoose"),
   cors = require("cors"),
   bodyParser = require("body-parser"),
-  dataBaseConfig = require("./database/db");
+  dataBaseConfig = require("./database/db"),
+  util = require("./util");
 
 // Connecting mongoDB
 mongoose.Promise = global.Promise;
@@ -34,6 +35,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, "static")));
 app.use("/", express.static(path.join(__dirname, "static")));
 app.use("/api/users/", studentRoute);
+app.use(util);
 app.use("/api/tasks/", taskRoute);
 
 // Create port
