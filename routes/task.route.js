@@ -47,16 +47,19 @@ router.route("/").post(function (req, res, next) {
 });
 
 // Update Task
-router.put("/:id", function (req, res, next) {
-  Task.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+router.put("/", function (req, res, next) {
+  console.log("update recieved", req.body);
+  Task.findByIdAndUpdate(req.body._id, req.body, function (err, post) {
+    console.log("post", post);
     if (err) return next(err);
     res.json(post);
   });
 });
 
 // Delete Task
-router.delete("/:id", function (req, res, next) {
-  Task.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+router.delete("/delete/:id", function (req, res, next) {
+  console.log(req.params.id);
+  Task.findByIdAndRemove({ _id: req.params.id }, function (err, post) {
     if (err) return next(err);
     res.json(post);
   });
