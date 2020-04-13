@@ -7,7 +7,8 @@ let Task = require("../model/Task.js");
 
 // Get Tasks
 router.get("/", function (req, res, next) {
-  Task.find({ userId: "5e811863a468065068ced0f4" }, (err, products) => {
+  const user = req.user;
+  Task.find({ userId: user.id }, (err, products) => {
     if (err) return next(err);
     res.json(products);
   });
