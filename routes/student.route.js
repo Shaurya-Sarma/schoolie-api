@@ -55,7 +55,7 @@ studentRoute.route("/login").post((req, res) => {
     } else {
       const user = { userName: data.userName, email: data.email, id: data.id };
       const token = jwt.sign(user, config.secret, {
-        expiresIn: 86400, // expires in 24 hours
+        expiresIn: 43200, // expires in 12 hours
       });
       res.json({ ...user, token: token });
     }
