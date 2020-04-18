@@ -14,7 +14,9 @@ module.exports = function (req, res, next) {
     jwt.verify(token, config.secret, (err, decoded) => {
       console.log("decoded = ", decoded);
       if (err) {
-        return next(err);
+        res.status(401);
+        res.json({});
+        // return next(err);
       } else {
         console.log("return decoded = ", decoded);
         req.user = decoded;

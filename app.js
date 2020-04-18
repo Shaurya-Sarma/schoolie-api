@@ -24,6 +24,7 @@ mongoose
 // Set up express js port
 const studentRoute = require("./routes/student.route");
 const taskRoute = require("./routes/task.route");
+const calendarRoute = require("./routes/calendar.route");
 const app = express();
 app.use(bodyParser.json());
 app.use(
@@ -37,6 +38,7 @@ app.use("/", express.static(path.join(__dirname, "static")));
 app.use("/api/users/", studentRoute);
 app.use(util);
 app.use("/api/tasks/", taskRoute);
+app.use("/api/calendar/", calendarRoute);
 
 // Create port
 const port = process.env.PORT || 4000;

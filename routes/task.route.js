@@ -20,10 +20,7 @@ router.get("/by-day/:date", function (req, res, next) {
   console.log("Recieve user:", req.user);
   const date = new Date(req.params.date);
   const user = req.user;
-  if (!user) {
-    res.status(401);
-    res.json({});
-  }
+
   Task.find({ userId: user.id, date: date }, (err, tasks) => {
     if (err) return next(err);
     res.json(tasks);
