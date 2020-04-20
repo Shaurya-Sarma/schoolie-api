@@ -2,61 +2,61 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 
-let Task = require("../model/Task.js");
+let Event = require("../model/Event.js");
 
-// Get Tasks
+// Get Events
 router.get("/", function (req, res, next) {
   const user = req.user;
-  Task.find({ userId: user.id }, (err, products) => {
+  Event.find({ userId: user.id }, (err, products) => {
     if (err) return next(err);
     res.json(products);
   });
 });
 
-// Get Tasks for a Day
-router.get("/by-day/:date", function (req, res, next) {
+// Get Events for a Day
+router.get("/by-date/:date", function (req, res, next) {
   console.log("Recieve req:", req.params.date);
   console.log("Recieve user:", req.user);
   const date = new Date(req.params.date);
   const user = req.user;
 
-  Task.find({ userId: user.id, date: date }, (err, tasks) => {
+  Event.find({ userId: user.id, date: date }, (err, events) => {
     if (err) return next(err);
-    res.json(tasks);
+    res.json(events);
   });
 });
 
-// Get One Task By ID
+// Get One Event By ID
 router.get("/:id", function (req, res, next) {
-  Task.findById(req.params.id, function (err, post) {
+  Event.findById(req.params.id, function (err, post) {
     if (err) return next(err);
     res.json(post);
   });
 });
 
-// Save New Task
+// Save New Event
 router.route("/").post(function (req, res, next) {
   req.body = { ...req.body, userId: req.user.id };
-  Task.create(req.body, function (err, post) {
+  Event.create(req.body, function (err, post) {
     if (err) return next(err);
     res.json(post);
   });
 });
 
-// Update Task
+// Update Event
 router.put("/", function (req, res, next) {
   console.log("update recieved", req.body);
-  Task.findByIdAndUpdate(req.body._id, req.body, function (err, post) {
+  Event.findByIdAndUpdate(req.body._id, req.body, function (err, post) {
     console.log("post", post);
     if (err) return next(err);
     res.json(post);
   });
 });
 
-// Delete Task
+// Delete Event
 router.delete("/delete/:id", function (req, res, next) {
   console.log(req.params.id);
-  Task.findByIdAndRemove({ _id: req.params.id }, function (err, post) {
+  Event.findByIdAndRemove({ _id: req.params.id }, function (err, post) {
     if (err) return next(err);
     res.json(post);
   });

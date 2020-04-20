@@ -29,43 +29,55 @@ router.get("/by-month/:date", function (req, res, next) {
     "END DATE:",
     new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
   );
-  const date = new Date(req.params.date);
   const user = req.user;
+  const date = req.params.date;
   //* Start Collection Chain - TASKS
   Task.find(
     {
       userId: user.id,
       date: {
-        $gte: new Date(new Date().getFullYear(), new Date().getMonth()),
-        $lte: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
+        $gte: new Date(new Date(date).getFullYear(), new Date(date).getMonth()),
+        $lte: new Date(
+          new Date(date).getFullYear(),
+          new Date(date).getMonth() + 1,
+          0
+        ),
       },
     },
     (err, tasks) => {
       if (err) return next(err);
+      console.log("event called");
       //* 2nd Collection Chain - EVENTS
       Event.find(
         {
           userId: user.id,
           date: {
-            $gte: new Date(new Date().getFullYear(), new Date().getMonth()),
+            $gte: new Date(
+              new Date(date).getFullYear(),
+              new Date(date).getMonth()
+            ),
             $lte: new Date(
-              new Date().getFullYear(),
-              new Date().getMonth() + 1,
+              new Date(date).getFullYear(),
+              new Date(date).getMonth() + 1,
               0
             ),
           },
         },
         (err, events) => {
           if (err) return next(err);
+          console.log("holiday called");
           // * 3rd Collection Chain - HOLIDAYS
           Holiday.find(
             {
               userId: user.id,
               date: {
-                $gte: new Date(new Date().getFullYear(), new Date().getMonth()),
+                $gte: new Date(
+                  new Date(date).getFullYear(),
+                  new Date(date).getMonth()
+                ),
                 $lte: new Date(
-                  new Date().getFullYear(),
-                  new Date().getMonth() + 1,
+                  new Date(date).getFullYear(),
+                  new Date(date).getMonth() + 1,
                   0
                 ),
               },
@@ -80,6 +92,7 @@ router.get("/by-month/:date", function (req, res, next) {
                 if (dc) dc.taskCount++;
                 else dateCells.push(new DateCell(task.date, 1, 0, 0));
               });
+              console.log("event going to loop", events);
               events.forEach((event) => {
                 const dc = dateCells.find(
                   (d) => d.date.getTime() === event.date.getTime()
@@ -94,6 +107,7 @@ router.get("/by-month/:date", function (req, res, next) {
                 if (dc) dc.holidayCount++;
                 else dateCells.push(new DateCell(holiday.date, 0, 0, 1));
               });
+              console.log("datecells", dateCells);
               res.json(dateCells);
             }
           );
