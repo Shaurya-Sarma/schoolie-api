@@ -27,6 +27,7 @@ const taskRoute = require("./routes/task.route");
 const calendarRoute = require("./routes/calendar.route");
 const eventRoute = require("./routes/event.route");
 const holidayRoute = require("./routes/holiday.route");
+const noteRoute = require("./routes/note.route");
 const app = express();
 app.use(bodyParser.json());
 app.use(
@@ -43,6 +44,7 @@ app.use("/api/tasks/", taskRoute);
 app.use("/api/calendar/", calendarRoute);
 app.use("/api/events/", eventRoute);
 app.use("/api/holidays/", holidayRoute);
+app.use("/api/notes/", noteRoute);
 
 // Create port
 const port = process.env.PORT || 4000;
