@@ -7,14 +7,15 @@ let Note = require("../model/Note.js");
 // Get Notes
 router.get("/", function (req, res, next) {
   const user = req.user;
-  Note.find({ userId: user.id }, (err, products) => {
+  Note.find({ userId: user.id }, { data: 0 }, (err, notes) => {
     if (err) return next(err);
-    res.json(products);
+    res.json(notes);
   });
 });
 
 // Get One Note By ID
 router.get("/:id", function (req, res, next) {
+  console.log("find note by id ", req.params.id);
   Note.findById(req.params.id, function (err, post) {
     if (err) return next(err);
     res.json(post);
