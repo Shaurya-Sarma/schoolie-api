@@ -11,7 +11,7 @@ let Note = new Schema(
       type: String,
     },
     tags: {
-      type: String,
+      type: [{}],
     },
     date: {
       type: Date,
