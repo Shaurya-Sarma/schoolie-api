@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
-const util = require("../util");
 
 let DateCell = require("../model/DateCell.js");
 let Task = require("../model/Task.js");
@@ -101,39 +99,6 @@ router.get("/by-month/:date", function (req, res, next) {
       );
     }
   );
-});
-
-// Get One Task By ID
-router.get("/:id", function (req, res, next) {
-  Task.findById(req.params.id, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
-});
-
-// Save New Task
-router.route("/").post(function (req, res, next) {
-  req.body = { ...req.body, userId: req.user.id };
-  Task.create(req.body, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
-});
-
-// Update Task
-router.put("/", function (req, res, next) {
-  Task.findByIdAndUpdate(req.body._id, req.body, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
-});
-
-// Delete Task
-router.delete("/delete/:id", function (req, res, next) {
-  Task.findByIdAndRemove({ _id: req.params.id }, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
 });
 
 module.exports = router;

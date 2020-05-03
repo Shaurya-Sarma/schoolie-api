@@ -1,5 +1,4 @@
 const express = require("express");
-const app = express();
 const studentRoute = express.Router();
 const jwt = require("jsonwebtoken");
 const config = require("../config");
@@ -27,17 +26,6 @@ studentRoute.route("/register").post((req, res, next) => {
   });
 });
 
-// Get all student
-studentRoute.route("/").get((req, res) => {
-  Student.find((error, data) => {
-    if (error) {
-      return next(error);
-    } else {
-      res.json(data);
-    }
-  });
-});
-
 // Get single student
 studentRoute.route("/login").post((req, res) => {
   Student.findOne({ email: req.body.email }, (error, data) => {
@@ -59,7 +47,7 @@ studentRoute.route("/login").post((req, res) => {
   });
 });
 
-// Update student
+/* // Update student
 studentRoute.route("/update-student/:id").put((req, res, next) => {
   Student.findByIdAndUpdate(
     req.params.id,
@@ -74,9 +62,9 @@ studentRoute.route("/update-student/:id").put((req, res, next) => {
       }
     }
   );
-});
+}); */
 
-// Delete student
+/* // Delete student
 studentRoute.route("/delete-student/:id").delete((req, res, next) => {
   Student.findByIdAndRemove(req.params.id, (error, data) => {
     if (error) {
@@ -87,6 +75,6 @@ studentRoute.route("/delete-student/:id").delete((req, res, next) => {
       });
     }
   });
-});
+}); */
 
 module.exports = studentRoute;
