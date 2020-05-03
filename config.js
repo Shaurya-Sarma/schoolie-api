@@ -1,3 +1,3 @@
 module.exports = {
-  secret: "password1234",
+  secret: process.env.SECRET_KEY || "for_local_only_123",
 };
