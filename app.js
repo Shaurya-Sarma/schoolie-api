@@ -14,10 +14,10 @@ mongoose
   })
   .then(
     () => {
-      console.log("Database connected sucessfully ");
+      // console.log("Database connected sucessfully ");
     },
     (error) => {
-      console.log("Could not connected to database : " + error);
+      // console.log("Could not connected to database : " + error);
     }
   );
 
@@ -49,7 +49,7 @@ app.use("/api/notes/", noteRoute);
 // Create port
 const port = process.env.PORT || 4000;
 const server = app.listen(port, () => {
-  console.log("Connected to port " + port);
+  // console.log("Connected to port " + port);
 });
 
 // Find 404 and hand over to error handler

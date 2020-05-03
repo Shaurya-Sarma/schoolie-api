@@ -15,7 +15,6 @@ router.get("/", function (req, res, next) {
 
 // Get One Note By ID
 router.get("/:id", function (req, res, next) {
-  console.log("find note by id ", req.params.id);
   Note.findById(req.params.id, function (err, post) {
     if (err) return next(err);
     res.json(post);
@@ -33,9 +32,7 @@ router.route("/").post(function (req, res, next) {
 
 // Update Note
 router.put("/", function (req, res, next) {
-  console.log("update recieved", req.body);
   Note.findByIdAndUpdate(req.body._id, req.body, function (err, post) {
-    console.log("post", post);
     if (err) return next(err);
     res.json(post);
   });
@@ -43,7 +40,6 @@ router.put("/", function (req, res, next) {
 
 // Delete Note
 router.delete("/delete/:id", function (req, res, next) {
-  console.log(req.params.id);
   Note.findByIdAndRemove({ _id: req.params.id }, function (err, post) {
     if (err) return next(err);
     res.json(post);

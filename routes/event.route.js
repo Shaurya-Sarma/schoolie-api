@@ -15,8 +15,6 @@ router.get("/", function (req, res, next) {
 
 // Get Events for a Day
 router.get("/by-date/:date", function (req, res, next) {
-  console.log("Recieve req:", req.params.date);
-  console.log("Recieve user:", req.user);
   const date = new Date(req.params.date);
   const user = req.user;
 
@@ -45,9 +43,7 @@ router.route("/").post(function (req, res, next) {
 
 // Update Event
 router.put("/", function (req, res, next) {
-  console.log("update recieved", req.body);
   Event.findByIdAndUpdate(req.body._id, req.body, function (err, post) {
-    console.log("post", post);
     if (err) return next(err);
     res.json(post);
   });
@@ -55,7 +51,6 @@ router.put("/", function (req, res, next) {
 
 // Delete Event
 router.delete("/delete/:id", function (req, res, next) {
-  console.log(req.params.id);
   Event.findByIdAndRemove({ _id: req.params.id }, function (err, post) {
     if (err) return next(err);
     res.json(post);

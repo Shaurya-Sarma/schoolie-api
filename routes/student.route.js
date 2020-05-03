@@ -13,7 +13,6 @@ studentRoute.route("/register").post((req, res, next) => {
     if (err) {
       return next(err);
     } else if (data) {
-      console.log("Email has already been taken", data);
       res.status(409);
       res.json({});
     } else {
@@ -41,9 +40,7 @@ studentRoute.route("/").get((req, res) => {
 
 // Get single student
 studentRoute.route("/login").post((req, res) => {
-  console.log("Recieved req", req.body);
   Student.findOne({ email: req.body.email }, (error, data) => {
-    console.log("Found req", data);
     if (!data) {
       res.status(404);
       res.json({});
@@ -72,10 +69,8 @@ studentRoute.route("/update-student/:id").put((req, res, next) => {
     (error, data) => {
       if (error) {
         return next(error);
-        console.log(error);
       } else {
         res.json(data);
-        console.log("Student successfully updated!");
       }
     }
   );

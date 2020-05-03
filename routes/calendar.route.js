@@ -19,16 +19,6 @@ router.get("/", function (req, res, next) {
 
 // Get Tasks for a Month
 router.get("/by-month/:date", function (req, res, next) {
-  console.log("calendar by month Recieve req:", req.params.date);
-  console.log("Recieve user:", req.user);
-  console.log(
-    "Start DATE:",
-    new Date(new Date().getFullYear(), new Date().getMonth())
-  );
-  console.log(
-    "END DATE:",
-    new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
-  );
   const user = req.user;
   const date = req.params.date;
   //* Start Collection Chain - TASKS
@@ -46,7 +36,6 @@ router.get("/by-month/:date", function (req, res, next) {
     },
     (err, tasks) => {
       if (err) return next(err);
-      console.log("event called");
       //* 2nd Collection Chain - EVENTS
       Event.find(
         {
@@ -65,7 +54,6 @@ router.get("/by-month/:date", function (req, res, next) {
         },
         (err, events) => {
           if (err) return next(err);
-          console.log("holiday called");
           // * 3rd Collection Chain - HOLIDAYS
           Holiday.find(
             {
@@ -92,7 +80,6 @@ router.get("/by-month/:date", function (req, res, next) {
                 if (dc) dc.taskCount++;
                 else dateCells.push(new DateCell(task.date, 1, 0, 0));
               });
-              console.log("event going to loop", events);
               events.forEach((event) => {
                 const dc = dateCells.find(
                   (d) => d.date.getTime() === event.date.getTime()
@@ -107,7 +94,6 @@ router.get("/by-month/:date", function (req, res, next) {
                 if (dc) dc.holidayCount++;
                 else dateCells.push(new DateCell(holiday.date, 0, 0, 1));
               });
-              console.log("datecells", dateCells);
               res.json(dateCells);
             }
           );
@@ -116,12 +102,6 @@ router.get("/by-month/:date", function (req, res, next) {
     }
   );
 });
-//   }).countDocuments((err, count) => {
-//     if (err) return next(err);
-//     console.log("Count:", count);
-//     res.json(count);
-//   });
-// });
 
 // Get One Task By ID
 router.get("/:id", function (req, res, next) {
@@ -142,9 +122,7 @@ router.route("/").post(function (req, res, next) {
 
 // Update Task
 router.put("/", function (req, res, next) {
-  console.log("update recieved", req.body);
   Task.findByIdAndUpdate(req.body._id, req.body, function (err, post) {
-    console.log("post", post);
     if (err) return next(err);
     res.json(post);
   });
@@ -152,7 +130,6 @@ router.put("/", function (req, res, next) {
 
 // Delete Task
 router.delete("/delete/:id", function (req, res, next) {
-  console.log(req.params.id);
   Task.findByIdAndRemove({ _id: req.params.id }, function (err, post) {
     if (err) return next(err);
     res.json(post);
